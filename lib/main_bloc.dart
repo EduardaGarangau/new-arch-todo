@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:rx_notifier/rx_notifier.dart';
 import 'package:todo_arch/domain/repositories/todos_repository.dart';
-import 'package:todo_arch/domain/states/todos_state.dart';
-import 'package:todo_arch/domain/usecases/fetch_todos_usecase.dart';
+import 'package:todo_arch/domain/usecases/bloc_fetch_todos_usecase.dart';
 import 'package:todo_arch/external/datasources/todos_datasource_impl.dart';
 import 'package:todo_arch/infra/repositories/todos_repository_impl.dart';
-import 'package:todo_arch/ui/presenter/pages/home_page.dart';
+import 'package:todo_arch/ui/presenter/pages/home_page_bloc.dart';
 
-late final TodosState state;
 late final TodosRepository repository;
-late final FetchTodosUsecase usecase;
+late final BlocFetchTodosUsecase usecase;
 
 void main() {
-  state = TodosState();
   repository = TodosRepositoryImpl(datasource: TodosDatasourceImpl());
-  usecase = FetchTodosUsecase(
-    repository: repository,
-    state: state,
-  );
+  usecase = BlocFetchTodosUsecase(repository);
 
   runApp(const RxRoot(child: MyApp()));
 }
@@ -34,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: HomePageBloc(blocFetchTodosUsecase: usecase),
     );
   }
 }
