@@ -3,7 +3,7 @@ class TodoEntity {
   final String title;
   final bool completed;
 
-  TodoEntity({
+  const TodoEntity({
     required this.id,
     required this.title,
     required this.completed,
